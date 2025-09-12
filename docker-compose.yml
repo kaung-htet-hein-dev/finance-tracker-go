@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  finance-tracker:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - DB_TYPE=sqlite
+      - DB_NAME=/app/data/finance_tracker.db
+      - JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+      - JWT_EXPIRATION=24
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
