@@ -1,0 +1,24 @@
+# Go build output
+/bin/
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+
+# Air config and logs
+.air.toml
+.air.conf
+/tmp/
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+
+# macOS
+.DS_Store
+
+.github/
+.env*
+!.env.example
