@@ -4,6 +4,7 @@ import (
 	"kaung-htet-hein-dev/finance-tracker-go/internal/infrastructure/db"
 	v1 "kaung-htet-hein-dev/finance-tracker-go/internal/interface/v1"
 	"kaung-htet-hein-dev/finance-tracker-go/internal/interface/v1/middleware"
+	"kaung-htet-hein-dev/finance-tracker-go/pkg"
 	"log"
 	"os"
 
@@ -11,17 +12,9 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type CustomValidator struct {
-	validator *validator.Validate
-}
-
-func (cv *CustomValidator) Validate(i interface{}) error {
-	return cv.validator.Struct(i)
-}
-
 func StartServer() {
 	e := echo.New()
-	e.Validator = &CustomValidator{validator: validator.New()}
+	e.Validator = &pkg.CustomValidator{Validator: validator.New()}
 
 	middleware.RegisterBasicMiddleware(e)
 

@@ -4,6 +4,7 @@ import (
 	"kaung-htet-hein-dev/finance-tracker-go/internal/infrastructure/repository"
 	"kaung-htet-hein-dev/finance-tracker-go/internal/interface/v1/handlers"
 	"kaung-htet-hein-dev/finance-tracker-go/internal/usecase"
+	"kaung-htet-hein-dev/finance-tracker-go/pkg"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
@@ -15,5 +16,5 @@ func RegisterUserRoutes(e *echo.Echo, db *gorm.DB) {
 	userHandler := handlers.NewUserHandler(userUsecase)
 
 	userGroup := e.Group("/api/v1/users")
-	userGroup.POST("/register", userHandler.CreateUser)
+	userGroup.POST("/register", pkg.BindAndValidate(userHandler.CreateUser))
 }
