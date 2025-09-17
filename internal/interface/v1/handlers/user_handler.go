@@ -10,6 +10,7 @@ import (
 
 type UserHandler interface {
 	CreateUser(c echo.Context, r *request.CreateUserRequest) error
+	LoginUser(c echo.Context, r *request.LoginUserRequest) error
 }
 
 type userHandler struct {
@@ -22,10 +23,20 @@ func NewUserHandler(userUsecase usecase.UserUsecaseInterface) UserHandler {
 	}
 }
 
-func (h *userHandler) CreateUser(c echo.Context, r *request.CreateUserRequest) error {
-	// Create User in DB
-	_, err := h.userUsecase.CreateUser(r)
+func (h *userHandler) LoginUser(c echo.Context, r *request.LoginUserRequest) error {
+	authResponse, err := h.userUsecase.LoginUser(r)
+	if err != nil {
+		return c.JSON(400, echo.Map{"message": err.Error()})
+	}
+	return c.JSON(200, echo.Map{
+		"message": "Login successful",
+		"data":    authResponse,
+	})
+}
 
+func (h *userHandler) CreateUser(c echo.Context, r *request.CreateUserRequest) error {
+	// Create User in DB and get auth response
+	authResponse, err := h.userUsecase.CreateUser(r)
 	if err != nil {
 		return c.JSON(400, echo.Map{"message": err.Error()})
 	}
@@ -33,5 +44,8 @@ func (h *userHandler) CreateUser(c echo.Context, r *request.CreateUserRequest) e
 	// Send Confirmation Email
 	go func() {}()
 
-	return c.JSON(201, echo.Map{"email": fmt.Sprintf("Confirmation email has been sent to %s", r.Email)})
+	return c.JSON(201, echo.Map{
+		"message": fmt.Sprintf("User created successfully. Confirmation email sent to %s", r.Email),
+		"data":    authResponse,
+	})
 }
