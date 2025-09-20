@@ -4,8 +4,11 @@ import "gorm.io/gorm"
 
 type User struct {
 	gorm.Model
-	FullName    string `json:"full_name" gorm:"not null"`
-	Email       string `gorm:"unique" json:"email"`
-	IsConfirmed bool   `json:"is_confirmed" gorm:"default:false"`
-	Password    string `json:"-"`
+	ID           uint          `gorm:"primaryKey" json:"id"`
+	FullName     string        `json:"full_name"`
+	Email        string        `gorm:"unique" json:"email"`
+	Password     string        `json:"-"`
+	IsConfirmed  bool          `json:"is_confirmed" gorm:"default:false"`
+	Categories   []Category    `gorm:"foreignKey:UserID" json:"categories,omitempty"`
+	Transactions []Transaction `gorm:"foreignKey:UserID" json:"transactions,omitempty"`
 }

@@ -3,7 +3,7 @@ package handlers
 import (
 	"fmt"
 	"kaung-htet-hein-dev/finance-tracker-go/internal/interface/v1/request"
-	"kaung-htet-hein-dev/finance-tracker-go/internal/usecase"
+	"kaung-htet-hein-dev/finance-tracker-go/internal/interface/v1/usecase"
 
 	"github.com/labstack/echo/v4"
 )
