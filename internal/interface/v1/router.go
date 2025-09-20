@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"kaung-htet-hein-dev/finance-tracker-go/internal/config"
 	"kaung-htet-hein-dev/finance-tracker-go/internal/infrastructure/auth"
 	"kaung-htet-hein-dev/finance-tracker-go/internal/infrastructure/repository"
 	"kaung-htet-hein-dev/finance-tracker-go/internal/interface/v1/handlers"
@@ -12,14 +11,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func init() {
-	cfg = config.LoadConfig()
-}
-
-var cfg *config.Config
-
-func RegisterUserRoutes(e *echo.Echo, db *gorm.DB) {
-	jwtService := auth.NewJWTService(cfg.JWTSecret)
+func RegisterUserRoutes(e *echo.Echo, db *gorm.DB, jwtService *auth.JWTService) {
 	userRepo := repository.NewUserRepository(db)
 	userUsecase := usecase.NewUserUsecase(userRepo, jwtService)
 	userHandler := handlers.NewUserHandler(userUsecase)
