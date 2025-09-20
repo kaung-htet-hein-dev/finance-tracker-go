@@ -43,3 +43,15 @@ func (r *UserRepository) LoginUser(email, password string) (*domain.User, error)
 
 	return &user, nil
 }
+
+func (r *UserRepository) GetUserByID(userID uint) (*domain.User, error) {
+	user := new(domain.User)
+
+	err := r.db.First(&user, userID).Error
+
+	if err != nil {
+		return nil, pkg.HandleGormError(err, "user")
+	}
+
+	return user, nil
+}

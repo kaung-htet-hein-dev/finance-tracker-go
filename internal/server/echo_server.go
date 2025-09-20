@@ -17,10 +17,12 @@ func StartServer() {
 	e.Validator = &pkg.CustomValidator{Validator: validator.New()}
 
 	middleware.RegisterBasicMiddleware(e)
+	middleware.RegisterJWTMiddleware(e)
 
 	db := db.ConnectDB()
 
 	v1.RegisterUserRoutes(e, db)
+	v1.RegisterTransactionRoutes(e, db)
 
 	port := ":" + os.Getenv("APP_PORT")
 

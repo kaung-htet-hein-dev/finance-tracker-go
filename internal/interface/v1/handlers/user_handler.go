@@ -11,6 +11,7 @@ import (
 type UserHandler interface {
 	CreateUser(c echo.Context, r *request.CreateUserRequest) error
 	LoginUser(c echo.Context, r *request.LoginUserRequest) error
+	GetCurrentUser(c echo.Context) error
 }
 
 type userHandler struct {
@@ -47,5 +48,18 @@ func (h *userHandler) CreateUser(c echo.Context, r *request.CreateUserRequest) e
 	return c.JSON(201, echo.Map{
 		"message": fmt.Sprintf("User created successfully. Confirmation email sent to %s", r.Email),
 		"data":    authResponse,
+	})
+}
+
+func (h *userHandler) GetCurrentUser(c echo.Context) error {
+	userID := c.Get("user_id")
+	user, err := h.userUsecase.GetUserByID(userID.(uint))
+	if err != nil {
+		return c.JSON(400, echo.Map{"message": err.Error()})
+	}
+
+	return c.JSON(200, echo.Map{
+		"message": "successful",
+		"data":    user,
 	})
 }

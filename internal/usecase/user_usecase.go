@@ -12,6 +12,7 @@ import (
 type UserUsecaseInterface interface {
 	CreateUser(r *request.CreateUserRequest) (*response.AuthResponse, error)
 	LoginUser(r *request.LoginUserRequest) (*response.AuthResponse, error)
+	GetUserByID(userID uint) (*domain.User, error)
 }
 
 type userUsecase struct {
@@ -82,4 +83,8 @@ func (u *userUsecase) LoginUser(r *request.LoginUserRequest) (*response.AuthResp
 	}
 
 	return authResponse, nil
+}
+
+func (u *userUsecase) GetUserByID(userID uint) (*domain.User, error) {
+	return u.userRepo.GetUserByID(userID)
 }
