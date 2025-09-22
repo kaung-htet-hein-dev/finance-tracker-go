@@ -19,13 +19,12 @@ func NewCategoryHandler(u *usecase.CategoryUsecase) *CategoryHandler {
 }
 
 func (h *CategoryHandler) CreateCategory(c echo.Context, req *request.CreateCategoryRequest) error {
-	// TODO: get userID from context/session
-	userID := uint(1)
-	category, err := h.usecase.CreateCategory(req.Name, userID)
+	userID := c.Get("user_id").(uint)
+	err := h.usecase.CreateCategory(req.Name, userID)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"error": err.Error()})
 	}
-	return c.JSON(http.StatusCreated, category)
+	return c.JSON(http.StatusCreated, echo.Map{"message": "successful"})
 }
 
 func (h *CategoryHandler) GetCategories(c echo.Context) error {
@@ -45,7 +44,7 @@ func (h *CategoryHandler) GetCategoryByID(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusNotFound, echo.Map{"error": err.Error()})
 	}
-	return c.JSON(http.StatusOK, category)
+	return c.JSON(http.StatusOK, echo.Map{"message": "successful", "data": category})
 }
 
 func (h *CategoryHandler) UpdateCategory(c echo.Context, req *request.UpdateCategoryRequest) error {

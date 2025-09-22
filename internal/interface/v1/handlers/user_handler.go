@@ -31,7 +31,7 @@ func (h *userHandler) LoginUser(c echo.Context, r *request.LoginUserRequest) err
 	}
 	return c.JSON(200, echo.Map{
 		"message": "Login successful",
-		"data":    authResponse.User,
+		"data":    authResponse,
 	})
 }
 

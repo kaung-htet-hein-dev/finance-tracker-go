@@ -31,8 +31,8 @@ func StartServer() {
 	db := db.ConnectDB()
 
 	v1.RegisterUserRoutes(e, db, jwtService)
-	v1.RegisterTransactionRoutes(e, db)
 	v1.RegisterCategoryRoutes(e, db)
+	v1.RegisterTransactionRoutes(e, db)
 
 	port := ":" + os.Getenv("APP_PORT")
 

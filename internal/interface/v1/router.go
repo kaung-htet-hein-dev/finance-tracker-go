@@ -31,8 +31,8 @@ func RegisterCategoryRoutes(e *echo.Echo, db *gorm.DB) {
 	categoryHandler := handlers.NewCategoryHandler(categoryUsecase)
 
 	categoryGroup := e.Group("/api/v1/categories")
-	categoryGroup.POST("/", pkg.BindAndValidate(categoryHandler.CreateCategory))
-	categoryGroup.GET("/", categoryHandler.GetCategories)
+	categoryGroup.POST("", pkg.BindAndValidate(categoryHandler.CreateCategory))
+	categoryGroup.GET("", categoryHandler.GetCategories)
 	categoryGroup.GET("/:id", categoryHandler.GetCategoryByID)
 	categoryGroup.PUT("/:id", pkg.BindAndValidate(categoryHandler.UpdateCategory))
 	categoryGroup.DELETE("/:id", categoryHandler.DeleteCategory)

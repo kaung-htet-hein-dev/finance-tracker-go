@@ -17,6 +17,11 @@ var apiPrefix = "/api/v1"
 
 var protectedRoutes = []path{
 	{Method: http.MethodGet, Path: apiPrefix + "/users/me"},
+	{Method: http.MethodGet, Path: apiPrefix + "/categories"},
+	{Method: http.MethodPost, Path: apiPrefix + "/categories"},
+	{Method: http.MethodGet, Path: apiPrefix + "/categories/:id"},
+	{Method: http.MethodPut, Path: apiPrefix + "/categories/:id"},
+	{Method: http.MethodDelete, Path: apiPrefix + "/categories/:id"},
 }
 
 func RegisterJWTMiddleware(e *echo.Echo, jwtService *auth.JWTService) {
@@ -45,7 +50,6 @@ func RegisterJWTMiddleware(e *echo.Echo, jwtService *auth.JWTService) {
 
 			c.Set("user_id", claims.UserID)
 			c.Set("email", claims.Email)
-
 			return next(c)
 		}
 	})
