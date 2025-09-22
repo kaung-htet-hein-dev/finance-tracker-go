@@ -22,8 +22,21 @@ func (u *CategoryUsecase) CreateCategory(name string, userID uint) error {
 	return nil
 }
 
-func (u *CategoryUsecase) GetCategories() ([]domain.Category, error) {
-	return u.repo.FindAll()
+func (u *CategoryUsecase) GetCategories() ([]response.CategoryResponse, error) {
+	categories, err := u.repo.FindAll()
+	if err != nil {
+		return nil, err
+	}
+
+	var categoryResponses []response.CategoryResponse
+	for _, category := range categories {
+		categoryResponses = append(categoryResponses, response.CategoryResponse{
+			ID:   category.ID,
+			Name: category.Name,
+		})
+	}
+
+	return categoryResponses, nil
 }
 
 func (u *CategoryUsecase) GetCategoryByID(id uint) (*response.CategoryResponse, error) {
@@ -39,16 +52,16 @@ func (u *CategoryUsecase) GetCategoryByID(id uint) (*response.CategoryResponse, 
 	}, nil
 }
 
-func (u *CategoryUsecase) UpdateCategory(id uint, name string) (*domain.Category, error) {
+func (u *CategoryUsecase) UpdateCategory(id uint, name string) error {
 	category, err := u.repo.FindByID(id)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	category.Name = name
 	if err := u.repo.Update(category); err != nil {
-		return nil, err
+		return err
 	}
-	return category, nil
+	return nil
 }
 
 func (u *CategoryUsecase) DeleteCategory(id uint) error {

@@ -32,7 +32,10 @@ func (h *CategoryHandler) GetCategories(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"error": err.Error()})
 	}
-	return c.JSON(http.StatusOK, categories)
+	return c.JSON(http.StatusOK, echo.Map{
+		"message": "successful",
+		"data":    categories,
+	})
 }
 
 func (h *CategoryHandler) GetCategoryByID(c echo.Context) error {
@@ -52,11 +55,13 @@ func (h *CategoryHandler) UpdateCategory(c echo.Context, req *request.UpdateCate
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"error": "Invalid category ID"})
 	}
-	category, err := h.usecase.UpdateCategory(uint(id), req.Name)
+	err = h.usecase.UpdateCategory(uint(id), req.Name)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"error": err.Error()})
 	}
-	return c.JSON(http.StatusOK, category)
+	return c.JSON(http.StatusOK, echo.Map{
+		"message": "successful",
+	})
 }
 
 func (h *CategoryHandler) DeleteCategory(c echo.Context) error {
