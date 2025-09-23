@@ -23,6 +23,17 @@ func RegisterUserRoutes(e *echo.Echo, db *gorm.DB, jwtService *auth.JWTService) 
 }
 
 func RegisterTransactionRoutes(e *echo.Echo, db *gorm.DB) {
+	transactionRepo := repository.NewTransactionRepository(db)
+	categoryRepo := repository.NewCategoryRepository(db)
+	transactionUsecase := usecase.NewTransactionUsecase(transactionRepo, categoryRepo)
+	transactionHandler := handlers.NewTransactionHandler(transactionUsecase)
+
+	transactionGroup := e.Group("/api/v1/transactions")
+	transactionGroup.POST("", pkg.BindAndValidate(transactionHandler.CreateTransaction))
+	transactionGroup.GET("", transactionHandler.GetTransactions)
+	transactionGroup.GET("/:id", transactionHandler.GetTransactionByID)
+	transactionGroup.PUT("/:id", pkg.BindAndValidate(transactionHandler.UpdateTransaction))
+	transactionGroup.DELETE("/:id", transactionHandler.DeleteTransaction)
 }
 
 func RegisterCategoryRoutes(e *echo.Echo, db *gorm.DB) {

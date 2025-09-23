@@ -7,7 +7,7 @@ type Transaction struct {
 	ID         uint      `gorm:"primaryKey" json:"id"`
 	Amount     float64   `json:"amount"`
 	Note       string    `json:"note"`
-	Type       string    `json:"type"`
+	Type       string    `gorm:"type:text;check:status IN ('income','expense')"`
 	UserID     uint      `json:"user_id"`
 	User       *User     `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"-"`
 	CategoryID uint      `json:"category_id"`

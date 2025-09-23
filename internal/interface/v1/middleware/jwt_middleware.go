@@ -22,6 +22,11 @@ var protectedRoutes = []path{
 	{Method: http.MethodGet, Path: apiPrefix + "/categories/:id"},
 	{Method: http.MethodPut, Path: apiPrefix + "/categories/:id"},
 	{Method: http.MethodDelete, Path: apiPrefix + "/categories/:id"},
+	{Method: http.MethodGet, Path: apiPrefix + "/transactions"},
+	{Method: http.MethodPost, Path: apiPrefix + "/transactions"},
+	{Method: http.MethodGet, Path: apiPrefix + "/transactions/:id"},
+	{Method: http.MethodPut, Path: apiPrefix + "/transactions/:id"},
+	{Method: http.MethodDelete, Path: apiPrefix + "/transactions/:id"},
 }
 
 func RegisterJWTMiddleware(e *echo.Echo, jwtService *auth.JWTService) {
